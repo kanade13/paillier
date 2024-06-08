@@ -27,17 +27,6 @@ def read_dataset():
 		data_X.append(a)
 	for a in y_train:
 		data_Y.append(a)
-	'''data_X, data_Y = [], []#data_X是特征,data_Y是标签
-	
-	with open("./data/breast.csv") as fin:
-		for line in fin:
-			data = line.split(',')
-			data_X.append([float(e) for e in data[:-1]])
-			if int(data[-1])==1:
-				data_Y.append(1)
-			else:
-				data_Y.append(-1)
-	'''
 	data_X = np.array(data_X)
 	data_Y = np.array(data_Y)
 	print("one_num: ", np.sum(data_Y==1), ", minus_one_num: ", np.sum(data_Y==-1))
@@ -61,11 +50,6 @@ def read_dataset():
 	
 
 if __name__ == '__main__':
-
-	'''parser = argparse.ArgumentParser(description='MY Federated Learning')#处理命令行参数
-	parser.add_argument('-c', '--conf', dest='conf')
-	args = parser.parse_args()#解析命令行参数'''
-	
 
 	with open('./utils/conf.json', 'r') as f:
 		conf = json.load(f)	#读取配置文件信息
