@@ -11,6 +11,7 @@ import random
 from server import *
 from client import *
 import models
+import pandas as pd
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, PolynomialFeatures
 
 def read_dataset():
@@ -67,6 +68,16 @@ if __name__ == '__main__':
 	
 	train_size = train_datasets[0].shape[0]
 	per_client_size = int(train_size/conf["no_models"])#每个客户端的数据量:模拟嘛,假设有no_models个客户端
+
+
+	#保存模拟用户的数据,对照实验用
+	df = pd.DataFrame(data=train_datasets[0][:per_client_size], columns=['x', 'y'])
+	df['label'] = train_datasets[1][:per_client_size]
+	csv_file_path = 'train_data.csv'
+	df.to_csv(csv_file_path, index=False)
+
+
+
 	for c in range(conf["no_models"]):
 		clients.append(Client(conf, Server.public_key, server.global_model.encrypt_weights, train_datasets[0][c*per_client_size: (c+1)*per_client_size], train_datasets[1][c*per_client_size: (c+1)*per_client_size]))
 

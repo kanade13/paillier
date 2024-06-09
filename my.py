@@ -4,10 +4,11 @@ import torch.optim as optim
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-
+import pandas as pd
+'''
 # 生成数据集
 np.random.seed(0)
-x = np.random.uniform(-10, 10, (1000, 2))
+x = np.random.uniform(-10, 10, (200, 2))
 y = np.where(x[:, 1] > x[:, 0], 1, -1)
 
 # 将数据集划分为训练集和测试集
@@ -22,8 +23,18 @@ x_train = torch.tensor(x_train, dtype=torch.float32)
 y_train = torch.tensor(y_train, dtype=torch.float32)
 x_test = torch.tensor(x_test, dtype=torch.float32)
 y_test = torch.tensor(y_test, dtype=torch.float32)
+'''
+csv_file_path = 'train_data.csv'
+df = pd.read_csv(csv_file_path)
 
+# 显示前五行数据
+print(df.head())
 
+features = df[['x', 'y']].values
+labels = df['label'].values
+features_tensor = torch.from_numpy(features).float()
+labels_tensor = torch.from_numpy(labels).long()
+x_train, x_test, y_train, y_test = train_test_split(features_tensor, labels_tensor , test_size=0.5, random_state=42)
 class LinearClassifier(nn.Module):
     def __init__(self):
         super(LinearClassifier, self).__init__()
@@ -35,10 +46,10 @@ class LinearClassifier(nn.Module):
 # 定义模型、损失函数和优化器
 model = LinearClassifier()
 criterion = nn.BCEWithLogitsLoss()
-optimizer = optim.SGD(model.parameters(), lr=0.01)
+optimizer = optim.SGD(model.parameters(), lr=0.15)
 
 # 训练模型
-num_epochs = 100
+num_epochs = 2*15
 train_losses = []
 test_accuracies = []
 
